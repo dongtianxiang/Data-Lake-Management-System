@@ -1,0 +1,22 @@
+// Jade file to specify output of an actors list
+// Inherits from layout
+extend layout
+block content
+  p
+    h5 New User Registration
+    h4 #{error}
+    form(method='post', action='/user')
+      h4 user name:
+      .login
+        input(name = 'username',type='text', value='')
+      h4 password:
+      .login
+        input(name = 'password',type='password', value='')
+      h4 password confirm:
+      .login
+        input(name = 'passwordconfirm',type='password', value='')
+
+      p
+        .register    
+          input(type='submit', value='Register')    
+    

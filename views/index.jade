@@ -1,0 +1,32 @@
+doctype html
+html
+  head
+    title Home
+    // Custom Theme files
+    link(href='stylesheets/style.css', rel='stylesheet', type='text/css', media='all')
+    // Custom Theme files
+    link(href='http://fonts.useso.com/css?family=Roboto:500,900italic,900,400italic,100,700italic,300,700,500italic,100italic,300italic,400', rel='stylesheet', type='text/css')
+    link(href='http://fonts.useso.com/css?family=Droid+Serif:400,700,400italic,700italic', rel='stylesheet', type='text/css')
+    // Google Fonts
+  body
+    .login
+      h2 Data Lake Management System
+      | &#x9;
+      .login-top
+        h1 Welcome!
+        h2 Please login in here.  #{error}
+        | &#x9;&#x9;
+        form(method='post', action='/account')
+          input(name = 'username',type='text', value='User Id', onfocus="this.value = '';", onblur="if (this.value == '')\
+          {this.value = 'User Id';}")
+          | &#x9;&#x9;&#x9;
+          input(name = 'password',type='password', value='password', onfocus="this.value = '';", onblur="if (this.value == '') {this.value = 'password';}")
+          | &#x9;&#x9;&#x9;
+          .confirm
+            input(type='submit', value='Login')
+        form(method='get', action='/register')
+          .register
+            input(type='submit', value='Register')
+      | &#x9;
+      .login-bottom
+

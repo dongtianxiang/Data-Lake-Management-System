@@ -1,0 +1,23 @@
+extend searchLayout
+block content
+  h5 Unicorn Search Engine
+  img(style='border:1px;width:260px;', src='stylesheets/image/datascience_unicorn.jpg')
+  p
+    form(method='get', action='/result')
+      h8 keyword1:
+      .key
+       input(name = 'keyword1',type='text', value='', style = 'text-align: center;')
+      p
+      h8 keyword2:
+      .key
+       input(name = 'keyword2',type='text', value='', style = 'text-align: center;')
+      p
+        .search    
+          input(type='submit', value='Search') 
+    p
+    .refresh
+      input(type='submit', value = 'Return', onclick = 'setReload()')
+    script(type='text/javascript').
+      function setReload(){
+      history.go(-1);
+      }      

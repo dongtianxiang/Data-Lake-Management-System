@@ -1,0 +1,322 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>Basic sigma.js example</title>
+  <style type="text/css">
+    body {
+      margin: 100;
+    }
+    #container {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+    }
+  </style>
+</head>
+<body>
+  <div id="container"></div>
+  <script src="./sigma.min.js"></script>
+  <script>
+      /* source map from input */
+      var mapResult = [];
+      mapResult.push({"3" : ["4", "1", "2", "8"]});
+      mapResult.push({"1" : ["0", "3", "9"]});
+      mapResult.push({"0" : ["1", "7", "10"]});
+      mapResult.push({"7" : ["0", "2"]});
+      mapResult.push({"2" : ["3", "7", "5", "11", "12"]});
+
+      var mapLabel = {};
+      mapLabel["0"] = "node0";
+      mapLabel["1"] = "node1";
+      mapLabel["2"] = "node2";
+      mapLabel["3"] = "node3";
+      mapLabel["4"] = "node4";
+      mapLabel["5"] = "node5";
+      mapLabel["6"] = "node6";
+      mapLabel["7"] = "node7";
+      mapLabel["8"] = "node8";
+      mapLabel["9"] = "node9";
+      mapLabel["10"] = "node10";
+      mapLabel["11"] = "node11";
+      mapLabel["12"] = "node12";
+
+
+
+
+    //   var noDupMap = {};
+    //   var kList = new Set();
+    //   for ( var index in mapResult ) {
+    //     var keyValue = mapResult[index];
+    //     for ( var key in keyValue ){
+    //       kList.add(key);
+    //     }
+    //   }
+
+
+    //   for ( var index in mapResult ) {
+    //     var keyValue = mapResult[index];
+    //     var newList = [];
+    //     for ( var key in keyValue ){
+    //       var list = keyValue[key];
+    //       // console.log(kList);
+    //       for ( var adjacent in list ){
+    //           if( kList.has(list[adjacent]) == false ){
+    //               newList.push(list[adjacent]);
+    //           }
+    //       }
+    //       noDupMap[key] = newList;
+    //     }
+    //   }
+
+    // // Let's first initialize sigma:
+    // var s = new sigma({
+    //     container: 'container', 
+    //     settings: {
+    //         doubleClickEnabled: false,
+    //         minEdgeSize: 0.5,
+    //         maxEdgeSize: 1.5,
+    //         edgeHoverColor: 'edge',
+    //         defaultEdgeHoverColor: '#000',
+    //         edgeHoverSizeRatio: 1,
+    //         edgeHoverExtremities: true,
+    //         zoomMin: 1.2,
+    //         zoomMax: 2,
+    //         minNodeSize: 5,
+
+    //       }
+    //   });
+
+    // // Then, let's add some data to display:
+
+    // var keyList = new Set();
+    
+    //   for ( var index in mapResult ){
+    //     var map = mapResult[index];
+    //     for (var key in map) {
+          
+    //       var str = 'n' + index;
+    //       keyList.add(str);
+
+    //       s.graph.addNode({
+    //         id: str,
+    //         label: mapLabel[key],
+    //         // x: key,
+    //         x: parseInt(index),
+    //         y: 0,
+    //         size: 4,
+    //         color: '#f00'
+    //       });
+    //     }
+    //     if( index > 0 ) {
+    //       s.graph.addEdge({
+    //           id: 'e' + index,
+    //           source: 'n' + (index - 1),
+    //           target: 'n' + index
+    //       });
+    //     }
+    //   }
+
+
+    // s.renderers[0].bind('clickNode', function(e){
+    //     for ( var index in mapResult ){
+    //        var nodeID = 'n' + index;  
+    //        if (e.data.node.id == nodeID) {
+    //          var map = mapResult[index];
+    //          var key;
+    //          for ( key in map ) {}
+    //             var listAdjacent = noDupMap[key];
+
+    //             if (listAdjacent.length != 0) {
+
+    //                for (var adjacentNode in listAdjacent) {   /* ['4']  for '3' for instance */
+    //                   var str = 'nn' + listAdjacent[adjacentNode];
+    //                     if( !keyList.has(str) ) {
+    //                       keyList.add(str);
+    //                       var ran = Math.random() * 2 - 1;
+    //                       var yIndex = parseInt(listAdjacent[adjacentNode]) % 2;
+    //                       if( yIndex == 0 ) yIndex = -0.3 ;
+    //                       if( yIndex == 1 ) yIndex = 0.3 ;
+    //                       var xIndex = parseInt(index) + ran;
+    //                       s.graph.addNode({
+    //                           id: str,
+    //                           label: mapLabel[listAdjacent[adjacentNode]],
+    //                           x: xIndex,
+    //                           y: yIndex,
+    //                           size: 4,
+    //                           color: '#f00'
+    //                       }).addEdge({
+    //                           id: 'ee' + listAdjacent[adjacentNode],
+    //                           source: 'n' + index,
+    //                           target: str
+    //                       });
+    //                       s.refresh();
+    //                  }
+    //               }
+    //            }
+    //        } 
+    //    }
+    // });
+    
+
+    // // Finally, let's ask our sigma instance to refresh:
+    // s.refresh();
+      var s = new sigma({
+        container: 'container', 
+        settings: {
+            doubleClickEnabled: false,
+            minEdgeSize: 0.5,
+            maxEdgeSize: 1.5,
+            edgeHoverColor: 'edge',
+            defaultEdgeHoverColor: '#000',
+            edgeHoverSizeRatio: 1,
+            edgeHoverExtremities: true,
+            zoomMin: 1.2,
+            zoomMax: 2,
+            minNodeSize: 5,
+
+          }
+      });
+
+
+    var noDupMap = {};
+      
+   function drawGraph(mapResult, mapLabel, k) {
+    
+      var kList = new Set();
+      for ( var index in mapResult ) {
+        var keyValue = mapResult[index];
+        for ( var key in keyValue ){
+          kList.add(key);
+        }
+      }
+
+      for ( var index in mapResult ) {
+        var keyValue = mapResult[index];
+        var newList = [];
+        for ( var key in keyValue ){
+          var list = keyValue[key];
+          // console.log(kList);
+          for ( var adjacent in list ){
+              if( kList.has(list[adjacent]) == false ){
+                  newList.push(list[adjacent]);
+              }
+          }
+          noDupMap[key] = newList;
+        }
+      }
+
+    // Then, let's add some data to display:
+
+    var keyList = new Set();
+    
+      for ( var index in mapResult ){
+        var map = mapResult[index];
+        for (var key in map) {
+          
+          var str = 'n' + key;
+          if( keyList.has(str) == false) {
+              keyList.add(str);
+
+              s.graph.addNode({
+                id: str,
+                label: mapLabel[key],
+                // x: key,
+                x: parseInt(index),
+                y: k,
+                size: 4,
+                color: '#f00'
+              });
+          }
+
+        }
+        if( index > 0 ) {
+          var map = mapResult[index];
+          var map2 = mapResult[index - 1];
+          var key2;
+          for( key2 in map2) {}
+          for (var key in map) {
+              s.graph.addEdge({
+                  id: 'e' + key + "#" + key2,
+                  source: 'n' + key2,
+                  target: 'n' + key
+              });
+          }
+        }
+      }
+      
+
+
+    s.renderers[0].bind('clickNode', function(e){
+        for ( var index in mapResult ){
+           var nodeID = 'n' + index;  
+           if (e.data.node.id == nodeID) {
+             var map = mapResult[index];
+             var key;
+             for ( key in map ) {}
+                var listAdjacent = noDupMap[key];
+
+                if (listAdjacent.length != 0) {
+
+                   for (var adjacentNode in listAdjacent) {   /* ['4']  for '3' for instance */
+                      var str = 'nn' + listAdjacent[adjacentNode];
+                        if( !keyList.has(str) ) {
+                          keyList.add(str);
+                          var ran = Math.random() * 2 - 1;
+                          var yIndex = parseInt(listAdjacent[adjacentNode]) % 2;
+                          if( yIndex == 0 ) yIndex = k - 0.3 ;
+                          if( yIndex == 1 ) yIndex = k + 0.3 ;
+                          var xIndex = parseInt(index) + ran;
+                          s.graph.addNode({
+                              id: str,
+                              label: mapLabel[listAdjacent[adjacentNode]],
+                              x: xIndex,
+                              y: yIndex,
+                              size: 4,
+                              color: '#f00'
+                          }).addEdge({
+                              id: 'ee' + listAdjacent[adjacentNode],
+                              source: 'n' + index,
+                              target: str
+                          });
+                          s.refresh();
+                     }
+                  }
+               }
+           } 
+       }
+    });
+      s.refresh();
+    }
+
+    drawGraph(mapResult, mapLabel, 2);
+
+    var mapResult1 = [];
+      mapResult1.push({"3" : ["4", "1", "2", "8"]});
+      mapResult1.push({"13" : ["0", "3", "9"]});
+      mapResult1.push({"14" : ["1", "7", "10"]});
+      mapResult1.push({"15" : ["0", "2"]});
+      mapResult1.push({"2" : ["3", "7", "5", "11", "12"]});
+
+    var mapLabel1 = {};
+      mapLabel1["0"] = "node0";
+      mapLabel1["1"] = "node1";
+      mapLabel1["2"] = "node2";
+      mapLabel1["3"] = "node3";
+      mapLabel1["4"] = "node4";
+      mapLabel1["5"] = "node5";
+      mapLabel1["6"] = "node6";
+      mapLabel1["7"] = "node7";
+      mapLabel1["8"] = "node8";
+      mapLabel1["9"] = "node9";
+      mapLabel1["10"] = "node10";
+      mapLabel1["11"] = "node11";
+      mapLabel1["12"] = "node12";
+      mapLabel1["13"] = "node13";
+      mapLabel1["14"] = "node14";
+      mapLabel1["15"] = "node15";
+
+    drawGraph(mapResult1, mapLabel1, 4);
+
+  </script>
+</body>
+</html>

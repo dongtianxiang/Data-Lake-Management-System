@@ -1,0 +1,14 @@
+doctype html
+html
+  head
+    title #{title} Where Amazing Happens
+    link(rel='stylesheet', href='/stylesheets/layout.css')
+  body
+    header
+      h1 #{title} Where Amazing Happens
+    .container
+      .main-content
+        block content
+      .sidebar
+        block sidebar
+    footer

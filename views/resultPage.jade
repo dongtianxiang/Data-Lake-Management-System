@@ -1,0 +1,219 @@
+doctype html
+html
+  head
+    title Basic sigma.js example
+    style(type='text/css').
+      body {
+      margin: 100;
+      }
+      #container {
+      position: absolute;
+      width: 100%;
+      height: 100%;
+      }
+  body
+    #container
+    script(src='https://s3.amazonaws.com/cis550whereamazinghappens/sigma.min.js')
+    script.
+      var mapResult = [];   //keyword.keyword1
+      mapResult.push({
+      "874": ["873"]
+      });
+      mapResult.push({
+      "873": ["872", "874"]
+      });
+      mapResult.push({
+      "872": ["824", "873", "875", "877"]
+      });
+      mapResult.push({
+      "824": ["47", "825","827", "830","832","834","836","838","840","842","872"]
+      });
+      mapResult.push({
+      "47": ["2","48","62","76","90","104","118","132","146","160","291","420","457","590","695","824"]
+      });
+      mapResult.push({
+      "160": ["47","161","163","166","168","170","172","174","176","178","288"]
+      });
+      mapResult.push({
+      "288": ["160","289"]
+      });
+      mapResult.push({
+      "289": ["288", "290"]
+      });
+      var mapLabel = {};
+      mapLabel["2"] = "view";
+      mapLabel["47"] = "columns";
+      mapLabel["48"] = "47_map1";
+      mapLabel["62"] = "47_map2";
+      mapLabel["76"] = "47_map3";
+      mapLabel["90"] = "47_map4";
+      mapLabel["104"] = "47_map5";
+      mapLabel["118"] = "47_map6";
+      mapLabel["132"] = "47_map7";
+      mapLabel["146"] = "47_map8";
+      mapLabel["160"] = "47_map9";
+      mapLabel["161"] = "id";
+      mapLabel["163"] = "name";
+      mapLabel["166"] = "dataTypeName";
+      mapLabel["168"] = "fieldName";
+      mapLabel["170"] = "position";
+      mapLabel["172"] = "renderTypeName";
+      mapLabel["174"] = "tableColumnId";
+      mapLabel["176"] = "width";
+      mapLabel["178"] = "cashedContents";
+      mapLabel["288"] = "format";
+      mapLabel["289"] = "align";
+      mapLabel["290"] = "left";
+      mapLabel["291"] = "47_map10";
+      mapLabel["420"] = "47_map11";
+      mapLabel["457"] = "47_map12";
+      mapLabel["590"] = "47_map13";
+      mapLabel["695"] = "47_map14";
+      mapLabel["824"] = "47_map15";
+      mapLabel["825"] = "id";
+      mapLabel["827"] = "name";
+      mapLabel["830"] = "dataTypeName";
+      mapLabel["832"] = "fieldName";
+      mapLabel["834"] = "position";
+      mapLabel["836"] = "renderTypeName";
+      mapLabel["838"] = "tableColumnId";
+      mapLabel["840"] = "width";
+      mapLabel["842"] = "cachedContents";
+      mapLabel["872"] = "format";
+      mapLabel["873"] = "precisionStyle";
+      mapLabel["874"] = "standard";
+      mapLabel["875"] = "align";
+      mapLabel["877"] = "noCommas";
+      
+      var mapResult1 = [];
+      mapResult1.push({
+          "874": [ "873" ]
+      }); 
+      mapResult1.push({
+          "873": [ "872", "874" ]
+      }); 
+      mapResult1.push({
+          "872": [ "824", "873", "875", "877" ]
+      }); 
+      mapResult1.push({
+          "875": [ "872", "876" ]
+      }); 
+      
+      var mapLabel2 = {};
+      mapLabel2["824"] = "47_map15";
+      mapLabel2["872"] = "format";
+      mapLabel2["873"] = "precisionStyle";
+      mapLabel2["874"] = "standard";
+      mapLabel2["875"] = "align";
+      mapLabel2["876"] = "right";
+      mapLabel2["877"] = "noCommas";
+      
+      
+      
+      var s = new sigma({
+      container: 'container',
+      settings: {
+      doubleClickEnabled: false,
+      minEdgeSize: 0.5,
+      maxEdgeSize: 1.5,
+      edgeHoverColor: 'edge',
+      defaultEdgeHoverColor: '#000',
+      edgeHoverSizeRatio: 1,
+      edgeHoverExtremities: true,
+      zoomMin: 0.6,
+      zoomMax: 2,
+      minNodeSize: 5,
+      }
+      });
+      
+      function drawGraph(mapResult, mapLabel, k_xIndex, k_shortest) {
+      var strSep = "";
+      for ( var i = 0; i < k_shortest; i++ ){
+      strSep += "#";
+      }
+      var noDupMap = {};
+      var keyList = new Set();
+      var kList = new Set();
+      for (var index in mapResult) {
+      var keyValue = mapResult[index];
+      for (var key in keyValue) {
+      kList.add(key);
+      }
+      }
+      for (var index in mapResult) {
+      var keyValue = mapResult[index];
+      var newList = [];
+      for (var key in keyValue) {
+      var list = keyValue[key];
+      for (var adjacent in list) {
+      if (kList.has(list[adjacent]) == false) {
+      newList.push(list[adjacent]);
+      }
+      }
+      noDupMap[key] = newList;
+      }
+      }
+      for (var index in mapResult) {
+      var map = mapResult[index];
+      for (var key in map) {
+      var str = 'n' + strSep + index;
+      keyList.add(str);
+      s.graph.addNode({
+      id: str,
+      label: mapLabel[key],
+      // x: key,
+      x: parseInt(index),
+      y: k_xIndex,
+      size: 4,
+      color: '#f00'
+      });
+      }
+      if (index > 0) {
+      s.graph.addEdge({
+      id: 'e' + strSep + index,
+      source: 'n' + strSep + (index - 1),
+      target: 'n' + strSep + index
+      });
+      }
+      }
+      s.renderers[0].bind('clickNode', function(e) {
+      for (var index in mapResult) {
+      var nodeID = 'n' + strSep + index;
+      if (e.data.node.id == nodeID) {
+      var map = mapResult[index];
+      var key;
+      for (key in map) {}
+      var listAdjacent = noDupMap[key];
+      if (listAdjacent.length != 0) {
+      for (var adjacentNode in listAdjacent) { 
+      var str = 'nn' + strSep + listAdjacent[adjacentNode];
+      if (!keyList.has(str)) {
+      keyList.add(str);
+      var ran = Math.random() * 2 - 1;
+      var yIndex = parseInt(listAdjacent[adjacentNode]) % 2;
+      if (yIndex == 0) yIndex = k_xIndex - 0.3;
+      if (yIndex == 1) yIndex = k_xIndex + 0.3;
+      var xIndex = parseInt(index) + ran;
+      s.graph.addNode({
+      id: str,
+      label: mapLabel[listAdjacent[adjacentNode]],
+      x: xIndex,
+      y: yIndex,
+      size: 4,
+      color: '#f00'
+      }).addEdge({
+      id: 'ee' + strSep + listAdjacent[adjacentNode],
+      source: 'n' + strSep + index,
+      target: str
+      });
+      s.refresh();
+      }
+      }
+      }
+      }
+      }
+      });
+      s.refresh();
+      }
+      drawGraph(mapResult1, mapLabel2, 2, 6);
+      drawGraph(mapResult, mapLabel, 4, 3);
