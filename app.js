@@ -17,9 +17,9 @@ var express = require('express')
 var app = express();
 
 /* Here for AWS_KEY and Amazon S3 key */
-var AWS_ACCESS_KEY = '*************I25NIIA';
-var AWS_SECRET_KEY = '******************wwQ5tibwQuiaY4/diGUx8k';
-var S3_BUCKET = '******************happens';
+var AWS_ACCESS_KEY = '********************';
+var AWS_SECRET_KEY = '******************************';
+var S3_BUCKET = '*************************';
 
 // all environments
 app.set('port', process.env.PORT || 8000);
